@@ -11,9 +11,9 @@ import (
 
 // DatabaseOpen ..
 func DatabaseOpen() (*gorm.DB, error) {
-	dbuser := helper.GetEnv("DATABASE_USER", "newuser")
-	dbpass := helper.GetEnv("DATABASE_PASSWORD", "newuser")
-	dbname := helper.GetEnv("DATABASE_NAME", "golangbe")
+	dbuser := helper.GetEnv("DATABASE_USER", "postgres")
+	dbpass := helper.GetEnv("DATABASE_PASSWORD", "password")
+	dbname := helper.GetEnv("DATABASE_NAME", "postgres")
 	dbaddres := helper.GetEnv("DATABASE_HOST", "localhost")
 	dbport := helper.GetEnv("DATABASE_PORT", "5432")
 	sslmode := helper.GetEnv("DATABASE_SSLMODE", "disable")
