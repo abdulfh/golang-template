@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"golangbe/utils/helper"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -10,22 +11,18 @@ import (
 
 // DatabaseOpen ..
 func DatabaseOpen() (*gorm.DB, error) {
-	// Local
-	dbuser := "newuser"
-	dbpass := "newuser"
-	dbname := "golangbe"
-	dbaddres := "localhost"
-
-	dbport := "5432"
-	sslmode := "disable"
-	dbtimeout := "5"
+	dbuser := helper.GetEnv("DATABASE_USER", "newuser")
+	dbpass := helper.GetEnv("DATABASE_PASSWORD", "newuser")
+	dbname := helper.GetEnv("DATABASE_NAME", "golangbe")
+	dbaddres := helper.GetEnv("DATABASE_HOST", "localhost")
+	dbport := helper.GetEnv("DATABASE_PORT", "5432")
+	sslmode := helper.GetEnv("DATABASE_SSLMODE", "disable")
+	dbtimeout := helper.GetEnv("DATABASE_TIMEOUT", "5")
 
 	args := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s connect_timeout=%s", dbaddres, dbport, dbuser, dbpass, dbname, sslmode, dbtimeout)
 	db, err := gorm.Open(postgres.Open(args), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
-
-	// db.AutoMigrate(&models.Book{})
 
 	if err != nil {
 		fmt.Println("Error Connecting Database : ", err)
