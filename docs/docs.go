@@ -25,9 +25,25 @@ var doc = `{
     "paths": {
         "/api/v1/book": {
             "get": {
-                "description": "Get book list from server.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Fetch All Book.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.ResponseApi"
+                        }
+                    }
+                }
+            },
+            "post": {
                 "consumes": [
-                    "*/*"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -35,15 +51,52 @@ var doc = `{
                 "tags": [
                     "Books"
                 ],
-                "summary": "Get Book List.",
+                "summary": "Create New Book",
+                "parameters": [
+                    {
+                        "description": "new book",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.BookRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/response.ResponseApi"
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.BookRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.ResponseApi": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "responseCode": {
+                    "type": "string"
+                },
+                "responseDesc": {
+                    "type": "string"
                 }
             }
         }
