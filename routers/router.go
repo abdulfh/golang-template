@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"golangbe/config"
 	"golangbe/controllers"
+	"golangbe/docs"
 	"golangbe/repository"
 	"golangbe/services"
 	"golangbe/utils/helper"
@@ -11,6 +12,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 type GoRouter struct {
@@ -47,8 +50,15 @@ func (goRouter *GoRouter) Routers() {
 	bookServices := services.InitBookServices(bookRepository)
 	bookController := controllers.InitBookController(bookServices)
 
+	docs.SwaggerInfo.Title = "Golang Template Swagger"
+	docs.SwaggerInfo.Description = "This is a list of sample api for Golang Template."
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+	docs.SwaggerInfo.Host = fmt.Sprintf("%s%s", helper.GetEnv("SWAGGER_HOST", "localhost"), helper.GetEnv("SERVER_PORT", ":40001"))
+
 	api := router.Group("/api/v1")
 	{
+		api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 		api.GET("/book", bookController.List)
 		api.POST("/book", bookController.Store)
 	}

@@ -1,0 +1,53 @@
+definitions:
+  models.BookRequest:
+    properties:
+      description:
+        type: string
+      title:
+        type: string
+    type: object
+  response.ResponseApi:
+    properties:
+      data:
+        type: object
+      responseCode:
+        type: string
+      responseDesc:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/book:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ResponseApi'
+      summary: Fetch All Book.
+      tags:
+      - Books
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: new book
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.BookRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ResponseApi'
+      summary: Create New Book
+      tags:
+      - Books
+swagger: "2.0"

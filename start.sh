@@ -3,6 +3,9 @@
 #main.go
 export SERVER_PORT=":40001"
 
+#routers/router.go
+export SWAGGER_HOST="localhost"
+
 #config/database.go
 export DATABASE_USER="postgres"
 export DATABASE_PASSWORD="password"

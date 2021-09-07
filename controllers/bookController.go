@@ -18,6 +18,11 @@ func InitBookController(services services.BookServices) *bookController {
 	return &bookController{services}
 }
 
+// @Summary Fetch All Book.
+// @Tags Books
+// @Produce json
+// @Success 200 {object} response.ResponseApi
+// @Router /api/v1/book [get]
 func (controller *bookController) List(context *gin.Context) {
 	response := response.ResponseApi{}
 
@@ -36,17 +41,28 @@ func (controller *bookController) List(context *gin.Context) {
 	context.JSON(http.StatusOK, response)
 }
 
+// @Summary Create New Book
+// @Tags Books
+// @Accept  json
+// @Produce  json
+// @Param user body models.BookRequest true "new book"
+// @Success 200 {object} response.ResponseApi
+// @Router /api/v1/book [post]
 func (controller *bookController) Store(context *gin.Context) {
-	dataInput := models.Book{}
+	dataRequest := models.BookRequest{}
 	response := response.ResponseApi{}
 
-	err := context.ShouldBindJSON(&dataInput)
+	err := context.ShouldBindJSON(&dataRequest)
 	if err != nil {
 		response.ResponseCode = constants.ERROR_RC410
 		response.ResponseDesc = constants.ERROR_RM410
 		context.JSON(http.StatusOK, response)
 		return
 	}
+
+	dataInput := models.Book{}
+	dataInput.Title = dataRequest.Title
+	dataInput.Description = dataRequest.Description
 
 	result, err := controller.services.Store(dataInput)
 	if err != nil {
@@ -59,6 +75,6 @@ func (controller *bookController) Store(context *gin.Context) {
 
 	response.ResponseCode = constants.ERROR_RC200
 	response.ResponseDesc = constants.ERROR_RM200
-	response.Data = result
+	response.Data = dataInput
 	context.JSON(http.StatusOK, response)
 }
